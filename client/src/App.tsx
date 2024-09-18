@@ -1,7 +1,14 @@
 // src/App.tsx
-import React, { useState } from 'react';
-import './index.css'; // Ensure Tailwind styles are imported
 
+import React, { useState } from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Dashboard from './pages/Dashboard';
+import MealPlans from './pages/MealPlan';
+import GroceryList from './pages/GroceryList';
+import Settings from './pages/Settings';
+import './index.css';
+
+// Landing page and login/signup components
 const App: React.FC = () => {
   const [isLogin, setIsLogin] = useState(true); // To toggle between Login and Sign Up forms
 
@@ -10,24 +17,40 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
-      {/* Landing Section */}
-      <section className="text-center mb-8">
-        <h1 className="text-4xl font-bold text-gray-900 mb-4">Welcome to Meal Mate</h1>
-        <p className="text-lg text-gray-600 mb-4">Delicious and healthy meal prep, delivered to your door.</p>
-        <button
-          onClick={toggleForm}
-          className="px-6 py-3 bg-red-500 text-white font-semibold rounded-md hover:bg-red-600"
-        >
-          {isLogin ? 'Sign Up' : 'Log In'}
-        </button>
-      </section>
+    <Router>
+      <Routes>
+        {/* Landing Page Route */}
+        <Route
+          path="/"
+          element={
+            <div className="flex flex-col items-center justify-center min-h-screen bg-green-100">
+              {/* Landing Section */}
+              <section className="text-center mb-8">
+                <h1 className="text-4xl font-bold text-gray-900 mb-4">Welcome to Meal Mate</h1>
+                <p className="text-lg text-gray-600 mb-4">Automatic Grocery List and Meal Prep.</p>
+                <button
+                  onClick={toggleForm}
+                  className="px-6 py-3 bg-red-500 text-white font-semibold rounded-md hover:bg-red-600"
+                >
+                  {isLogin ? 'Sign Up' : 'Log In'}
+                </button>
+              </section>
 
-      {/* Login / Sign Up Section */}
-      <section className="bg-white p-6 rounded-lg shadow-lg w-96">
-        {isLogin ? <LoginForm toggleForm={toggleForm} /> : <SignUpForm toggleForm={toggleForm} />}
-      </section>
-    </div>
+              {/* Login / Sign Up Section */}
+              <section className="bg-white p-6 rounded-lg shadow-lg w-96">
+                {isLogin ? <LoginForm toggleForm={toggleForm} /> : <SignUpForm toggleForm={toggleForm} />}
+              </section>
+            </div>
+          }
+        />
+
+        {/* Dashboard and other pages */}
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/meal-plans" element={<MealPlans />} />
+        <Route path="/grocery-list" element={<GroceryList />} />
+        <Route path="/settings" element={<Settings />} />
+      </Routes>
+    </Router>
   );
 };
 
